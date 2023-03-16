@@ -8,7 +8,7 @@
   <div id="plotDiv"></div>
 
   <script>
-    Plotly.d3.csv("data.csv", function(data) {
+    Plotly.d3.csv("https://raw.githubusercontent.com/jpwidera/detect/main/detectData.csv", function(data) {
 
       var range = [];
       var azimuth = [];
@@ -29,10 +29,10 @@
         marker: {
           color: lsnr,
           colorscale: "Viridis",
-          size: 1,
+          size: 2,
           sizemode: "diameter"
         },
-        type: "scatterpolar"
+        type: "scatterpolargl"
       };
 
       var layout = {

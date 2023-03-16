@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+
+  <div id="plotDiv"></div>
+
+  <script>
+    Plotly.d3.csv("https://raw.githubusercontent.com/jpwidera/detect/main/detectData.csv", function(data) {
+        // Convert azimuth to radians
+  var theta = data.map(function(d) {
+    return Math.PI / 180 * d.Azimuth;
+  });
+
+  // Extract the radial velocity and range data
+  var radialVelocityValues = data.map(function(d) {
+    return d.Velocity;
+  });
+
+  var rangeValues = data.map(function(d) {
+    return d.Range;
+  });
+
+  // Calculate the x and y coordinates
+  var xValues = rangeValues.map(function(d, i) {
+    return d * Math.cos(theta[i]);
+  });
+
+  var yValues = rangeValues.map(function(d, i) {
+    return d * Math.sin(theta[i]);
+  });
+
+  // Create the plot
+  var trace1 = {
+    x: xValues,
+    y: yValues,
+    mode: "markers",
+    marker: {
+      color: radialVelocityValues,
+      colorscale: "Viridis",
+      size: 3,
+      sizemode: "diameter"
+    },
+    type: "scattergl"
+  };
+
+  var layout = {
+    width: 1400,
+    height: 1400
+  };
+
+  var data = [trace1];
+  Plotly.newPlot("plotDiv", data, layout);
+
+});
+  </script>
+
+</body>
+</html>
+

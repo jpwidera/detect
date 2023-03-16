@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <script src="https://cdn.plot.ly/plotly-latest.min.js"></script>
+</head>
+<body>
+
+  <div id="plotDiv"></div>
+
+  <script>
+    Plotly.d3.csv("data.csv", function(data) {
+
+      var range = [];
+      var azimuth = [];
+      var lsnr = [];
+
+      // Extract the data from the CSV file and store it in arrays
+      for (var i = 0; i < data.length; i++) {
+        range.push(parseFloat(data[i].Range));
+        azimuth.push(parseFloat(data[i].Azimuth));
+        lsnr.push(parseFloat(data[i].lSNR));
+      }
+
+      // Create the plot
+      var trace1 = {
+        r: range,
+        theta: azimuth,
+        mode: "markers",
+        marker: {
+          color: lsnr,
+          colorscale: "Viridis",
+          size: 1,
+          sizemode: "diameter"
+        },
+        type: "scatterpolar"
+      };
+
+      var layout = {
+        polar: {
+          radialaxis: {
+            visible: true,
+            range: [0, Math.max(...range)]
+          },
+          angularaxis: {
+            visible: true,
+            range: [0, 360]
+          }
+        },
+        width: 1400,
+        height: 1400
+      };
+
+      var data = [trace1];
+      Plotly.newPlot("plotDiv", data, layout);
+
+    });
+  </script>
+
+</body>
+</html>
+
